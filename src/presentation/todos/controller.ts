@@ -40,7 +40,7 @@ export class TodosController{
 
     public createTodo = (req:Request, res:Response) => {
         const [error, createTodoDto] = CreateTodoDto.create(req.body);
-        if(error) return res.status(404).json({error: error});
+        if(error) return res.status(400).json({error: error});
 
         new CreateTodo(this.todoRepository)
             .execute(createTodoDto!)
@@ -53,7 +53,7 @@ export class TodosController{
 
         const id = +req.params.id;
         const [error, updateTodoDto] = UpdateTodoDto.create({...req.body, id});
-        if (error) return res.status(404).json({error: error});
+        if (error) return res.status(400).json({error: error});
 
         
         new UpdateTodo(this.todoRepository)
@@ -65,7 +65,7 @@ export class TodosController{
 
     public deleteTodo = (req:Request, res:Response) => {
         const id = +req.params.id;
-        if(isNaN(id)) return res.status(404).json({error: `ID argument must be a number`});
+        if(isNaN(id)) return res.status(400).json({error: `ID argument must be a number`});
 
         new DeleteTodo(this.todoRepository)
             .execute(id)
